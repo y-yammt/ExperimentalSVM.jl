@@ -1,4 +1,4 @@
-module SVM
+module ExperimentalSVM
 
 import StatsBase.predict
 

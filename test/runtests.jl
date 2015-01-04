@@ -1,5 +1,5 @@
 srand(1)
-using SVM
+using ExperimentalSVM
 iris = readcsv(joinpath(dirname(@__FILE__), "iris.csv"))
 X = iris[:, 1:4]'
 p, n = size(X)
