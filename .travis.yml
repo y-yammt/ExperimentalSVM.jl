@@ -9,7 +9,7 @@ before_install:
   - sudo apt-get update -qq -y
   - sudo apt-get install libpcre3-dev julia -y
 script:
-  - julia -e 'Pkg.init(); Pkg.add("StatsBase"); Pkg.checkout("StatsBase"); run(`ln -s $(pwd()) $(Pkg.dir("SVM"))`); Pkg.pin("SVM"); Pkg.resolve()'
+  - julia -e 'Pkg.init(); Pkg.add("StatsBase"); Pkg.checkout("StatsBase"); run(`ln -s $(pwd()) $(Pkg.dir("ExperimentalSVM"))`); Pkg.pin("ExperimentalSVM"); Pkg.resolve()'
   - julia --code-coverage test/runtests.jl
 after_success:
-  - julia -e 'cd(Pkg.dir("SVM")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'cd(Pkg.dir("ExperimentalSVM")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
