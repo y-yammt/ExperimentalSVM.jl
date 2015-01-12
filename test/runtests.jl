@@ -10,7 +10,8 @@ iris_model_pegasos_optim = svm(irisX[:,train], irisY[train])
 iris_model_cddual_optim = cddual(irisX[:,train], irisY[train])
 @assert (predict(iris_model_cddual_optim, irisX[:, ~train])) == irisY[~train]
 
-rcvY, rcvX = read_svm_data("rcv1_train.binary")
+rcvY, rcvX = read_svm_data(joinpath(dirname(@__FILE__), "rcv1_train.binary"))
+
 rcv_model_pegasos_optim = svm(rcvX, rcvY)
 rcv_model_cddual_optim = cddual(rcvX, rcvY)
 
