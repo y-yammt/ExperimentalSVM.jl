@@ -3,7 +3,7 @@
 # p: # of features
 # n: # of data points
 # k: size of minibatch
-function pegasos(X::Matrix,
+function pegasos(X::SparseOrFullMat,
 	             Y::Vector;
 	             k::Integer = 5,
 	             lambda::Real = 0.1,
@@ -39,7 +39,8 @@ function pegasos(X::Matrix,
 
 			# Test if prediction isn't sufficiently good
 			# If so, current item is element of At+
-			pred = Y[index] * dot(w, X[:, index])
+			# pred = Y[index] * dot(w, X[:, index])
+			pred = Y[index] * (w'X[:, index])[1]
 			if pred < 1.0
 				# Update subgradient 
 				for j in 1:p

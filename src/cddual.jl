@@ -1,7 +1,7 @@
 # Randomization option slows down processing
 # but improves quality of solution considerably
 # Would be better to do randomization in place
-function cddual(X::Matrix,
+function cddual(X::SparseOrFullMat,
 	            Y::Vector;
 	            C::Real = 1.0,
 	            norm::Integer = 2,
@@ -35,7 +35,7 @@ function cddual(X::Matrix,
 	# Set Qbar
 	Qbar = Array(Float64, l)
 	for i in 1:l
-		Qbar[i] = D[i] + dot(X[:, i], X[:, i])
+		Qbar[i] = D[i] + vecnorm(X[:, i], 2)^2
 	end
 
 	# Loop over examples
@@ -58,7 +58,7 @@ function cddual(X::Matrix,
 
 		# Process all observations
 		for i in indices
-			g = Y[i] * dot(w, X[:, i]) - 1.0 + D[i] * alpha[i]
+			g = Y[i] * (w'X[:, i])[1] - 1.0 + D[i] * alpha[i]
 
 			if alpha[i] == 0.0
 				pg = min(g, 0.0)

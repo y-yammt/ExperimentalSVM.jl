@@ -3,6 +3,9 @@ module ExperimentalSVM
 import StatsBase.predict
 
 export svm, cddual, pegasos, predict
+export read_svm_data
+
+typealias SparseOrFullMat Union(Matrix, SparseMatrixCSC)
 
 type SVMFit
 	w::Vector{Float64}
@@ -17,7 +20,7 @@ function Base.show(io::IO, fit::SVMFit)
 	@printf io " * Converged: %s\n" string(fit.converged)
 end
 
-function predict(fit::SVMFit, X::Matrix)
+function predict(fit::SVMFit, X::SparseOrFullMat)
 	n, l = size(X)
 	preds = Array(Float64, l)
 	for i in 1:l
@@ -30,13 +33,13 @@ function predict(fit::SVMFit, X::Matrix)
 	return preds
 end
 
+include("io.jl")
+
 include("pegasos.jl")
 
 include("cddual.jl")
 
-include("sparse.jl")
-
-function svm(X::Matrix,
+function svm(X::SparseOrFullMat,
 	         Y::Vector;
 	         k::Integer = 5,
 	         lambda::Real = 0.1,
