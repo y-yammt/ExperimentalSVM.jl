@@ -2,10 +2,11 @@ SVM.jl
 ======
 
 
-[![Build Status](https://travis-ci.org/JuliaStats/SVM.jl.svg)](https://travis-ci.org/JuliaStats/SVM.jl)
+[![Build Status](https://travis-ci.org/y-yammt/ExperimentalSVM.jl.svg)](https://travis-ci.org/y-yammt/ExperimentalSVM.jl)
+<!--
 [![Coverage Status](https://coveralls.io/repos/JuliaStats/SVM.jl/badge.png)](https://coveralls.io/r/JuliaStats/SVM.jl)
 [![SVM](http://pkg.julialang.org/badges/SVM_release.svg)](http://pkg.julialang.org/?pkg=SVM&ver=release)
-
+-->
 
 # SVMs in Julia
 
