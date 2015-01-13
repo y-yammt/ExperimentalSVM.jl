@@ -20,14 +20,10 @@ function cddual(X::SparseOrFullMat,
 	D = Array(Float64, l)
 	if norm == 1
 		U = C
-		for i in 1:l
-			D[i] = 0.0
-		end
+		fill!(D, 0.0)
 	elseif norm	== 2
 		U = Inf
-		for i in 1:l
-			D[i] = 1.0 / (2.0 * C)
-		end
+		fill!(D, 1.0 / (2.0 * C))
 	else
 		DomainError("Only L1-SVM and L2-SVM are supported")
 	end
@@ -71,9 +67,7 @@ function cddual(X::SparseOrFullMat,
 			if abs(pg) > 0.0
 				alphabar = alpha[i]
 				alpha[i] = min(max(alpha[i] - g / Qbar[i], 0.0), U)
-				for j in 1:n
-					w[j] = w[j] + (alpha[i] - alphabar) * Y[i] * X[j, i]
-				end
+				add_vec!(w, X[:, i], e -> (alpha[i] - alphabar) * Y[i] * e)
 			end
 		end
 	end

@@ -20,18 +20,17 @@ function Base.show(io::IO, fit::SVMFit)
 	@printf io " * Converged: %s\n" string(fit.converged)
 end
 
-function predict(fit::SVMFit, X::SparseOrFullMat)
+function predict(fit::SVMFit, X::SparseOrFullMat, ret_class::Bool=true)
 	n, l = size(X)
 	preds = Array(Float64, l)
 	for i in 1:l
-		tmp = 0.0
-		for j in 1:n
-			tmp += fit.w[j] * X[j, i]
-		end
-		preds[i] = sign(tmp)
+		v = ((fit.w)'X[:,i])[1]
+		preds[i] = ret_class ? sign(v) : v
 	end
 	return preds
 end
+
+include("calc.jl")
 
 include("io.jl")
 

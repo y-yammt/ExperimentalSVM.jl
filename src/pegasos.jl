@@ -39,13 +39,10 @@ function pegasos(X::SparseOrFullMat,
 
 			# Test if prediction isn't sufficiently good
 			# If so, current item is element of At+
-			# pred = Y[index] * dot(w, X[:, index])
 			pred = Y[index] * (w'X[:, index])[1]
 			if pred < 1.0
 				# Update subgradient 
-				for j in 1:p
-					deltaw[j] += Y[index] * X[j, index]
-				end
+				add_vec!(deltaw, X[:, index], e -> Y[index] * e)
 			end
 		end
 
@@ -53,7 +50,7 @@ function pegasos(X::SparseOrFullMat,
 		for j in 1:p
 			deltaw[j] *= (eta_t / k)
 		end
-
+	
 		# Calculate tentative weight-update
 		for j in 1:p
 			w_tmp[j] = (1.0 - alpha) * w[j] + deltaw[j]

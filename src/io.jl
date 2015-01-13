@@ -14,7 +14,7 @@ function read_svm_data(pathname::String)
 			push!(mat_x_j, j)
 			push!(mat_x_v, parsefloat(Float64, feature_value))
 		end
-		j = j + 1
+		j += 1
 	end
 	close(io)
 	return vec_y, sparse(mat_x_i, mat_x_j, mat_x_v)
