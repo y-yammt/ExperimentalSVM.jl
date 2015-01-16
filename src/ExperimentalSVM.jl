@@ -24,7 +24,7 @@ function predict(fit::SVMFit, X::SparseOrFullMat, ret_class::Bool=true)
 	n, l = size(X)
 	preds = Array(Float64, l)
 	for i in 1:l
-		v = ((fit.w)'X[:,i])[1]
+		v = inner_prod(fit.w, X[:,i])
 		preds[i] = ret_class ? sign(v) : v
 	end
 	return preds

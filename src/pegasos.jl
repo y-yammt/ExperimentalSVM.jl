@@ -39,7 +39,7 @@ function pegasos(X::SparseOrFullMat,
 
 			# Test if prediction isn't sufficiently good
 			# If so, current item is element of At+
-			pred = Y[index] * (w'X[:, index])[1]
+			pred = Y[index] * inner_prod(w, X[:, index])
 			if pred < 1.0
 				# Update subgradient 
 				add_vec!(deltaw, X[:, index], e -> Y[index] * e)

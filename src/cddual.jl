@@ -54,7 +54,7 @@ function cddual(X::SparseOrFullMat,
 
 		# Process all observations
 		for i in indices
-			g = Y[i] * (w'X[:, i])[1] - 1.0 + D[i] * alpha[i]
+			g = Y[i] * inner_prod(w, X[:, i]) - 1.0 + D[i] * alpha[i]
 
 			if alpha[i] == 0.0
 				pg = min(g, 0.0)
