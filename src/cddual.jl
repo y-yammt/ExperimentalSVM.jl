@@ -6,7 +6,10 @@ function cddual(X::SparseOrFullMat,
 	            C::Real = 1.0,
 	            norm::Integer = 2,
 	            randomized::Bool = true,
-	            maxpasses::Integer = 2)
+	            maxpasses::Integer = 1000,
+              eps::Real = 0.1)
+	const PG_EPS = 1.0e-12
+
 	# l: # of samples
 	# n: # of features
 	n, l = size(X)
@@ -39,11 +42,12 @@ function cddual(X::SparseOrFullMat,
 	pass = 0
 
 	while !converged
-		# Assess convergence
 		pass += 1
-		if pass == maxpasses
-			converged = true
+		if pass > maxpasses
+			break
 		end
+		pg_max = -Inf
+		pg_min = Inf
 
 		# Choose order of observations to process
 		if randomized
@@ -63,12 +67,19 @@ function cddual(X::SparseOrFullMat,
 			else
 				pg = g
 			end
+			pg_max = max(pg_max, pg)
+			pg_min = min(pg_min, pg)
 
-			if abs(pg) > 0.0
+			if abs(pg) > PG_EPS
 				alphabar = alpha[i]
 				alpha[i] = min(max(alpha[i] - g / Qbar[i], 0.0), U)
 				add_vec!(w, X[:, i], e -> (alpha[i] - alphabar) * Y[i] * e)
 			end
+		end
+
+		if (pg_max - pg_min <= eps)
+			converged = true
+			break
 		end
 	end
 
