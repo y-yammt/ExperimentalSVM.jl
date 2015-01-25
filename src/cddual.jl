@@ -7,7 +7,7 @@ function cddual(X::SparseOrFullMat,
 	            norm::Integer = 2,
 	            randomized::Bool = true,
 	            maxpasses::Integer = 1000,
-              eps::Real = 0.1)
+	            eps::Real = 0.1)
 	const PG_EPS = 1.0e-12
 
 	# l: # of samples
@@ -46,6 +46,7 @@ function cddual(X::SparseOrFullMat,
 		if pass > maxpasses
 			break
 		end
+		inv_ins = 0
 		pg_max = -Inf
 		pg_min = Inf
 
@@ -62,8 +63,14 @@ function cddual(X::SparseOrFullMat,
 
 			if alpha[i] == 0.0
 				pg = min(g, 0.0)
+				if g <= 0.0
+					inv_ins += 1
+				end
 			elseif alpha[i] == U
 				pg = max(g, 0.0)
+				if g >= 0.0
+					inv_ins += 1
+				end
 			else
 				pg = g
 			end
@@ -77,7 +84,7 @@ function cddual(X::SparseOrFullMat,
 			end
 		end
 
-		if (pg_max - pg_min <= eps)
+		if (pg_max - pg_min <= eps) && (inv_ins == 0)
 			converged = true
 			break
 		end
