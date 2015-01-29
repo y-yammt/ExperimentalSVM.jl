@@ -41,6 +41,8 @@ function cddual(X::SparseOrFullMat,
 	converged = false
 	pass = 0
 
+	indices = randomized ? randperm(l) : [1:l]
+
 	while !converged
 		pass += 1
 		if pass > maxpasses
@@ -50,11 +52,8 @@ function cddual(X::SparseOrFullMat,
 		pg_max = -Inf
 		pg_min = Inf
 
-		# Choose order of observations to process
 		if randomized
-			indices = randperm(l)
-		else
-			indices = 1:l
+			shuffle!(indices)
 		end
 
 		# Process all observations
