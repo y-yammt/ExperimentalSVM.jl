@@ -2,7 +2,7 @@ module ExperimentalSVM
 
 import StatsBase.predict
 
-export svm, cddual, pegasos, predict
+export svm, cddual, cddual_shrinking, pegasos, predict
 export read_svm_data
 
 typealias SparseOrFullMat Union(Matrix, SparseMatrixCSC)
@@ -37,6 +37,8 @@ include("io.jl")
 include("pegasos.jl")
 
 include("cddual.jl")
+
+include("cddual_shrinking.jl")
 
 function svm(X::SparseOrFullMat,
 	         Y::Vector;
